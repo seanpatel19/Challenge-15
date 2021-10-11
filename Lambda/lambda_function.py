@@ -124,28 +124,33 @@ def recommend_portfolio(intent_request):
     risk_level = get_slots(intent_request)["riskLevel"]
     source = intent_request["invocationSource"]
 
-    # YOUR CODE GOES HERE!
 
-def validate_data(birthday, dollars, intent_request):
+    if risk_level =="none":
+        return ["dialogAction"]["message"]["content"] = none()
+    elif risk_level == "low":
+        return["dialogAction"]["message"]["content"] = low()
+    elif risk_level =="medium":
+        return["dialogAction"]["message"]["content"] = medium()
+    else:
+        return["dialogAction"]["message"]["content"] = high()
+
+def validate_data(age, dollars, intent_request):
     """
     Validates the data provided by the user.
     """
 
     # Validate that the user is over 0 years old and less than 65 years old 
-    if birthday is not None:
-        birth_date = datetime.strptime(birthday, "%Y-%m-%d")
-        age = relativedelta(datetime.now(), birth_date).years
-        if age < 0  or  age > 65: 
+    if age < 0  or  age > 65: 
             return build_validation_result(
                 False,
-                "birthday",
+                "age",
                 "Your Age is unacceptable "
-                "please provide a different date of birth.",
+                "please get younger or older",
             )
 
     # Validate the investment amount, it should be greater than 5000
     if dollars is not None:
-        dollars = parse_float(0
+        dollars = parse_int(
             dollars
         )  # Since parameters are strings it's important to cast values
         if dollars <= 5000:
@@ -158,7 +163,19 @@ def validate_data(birthday, dollars, intent_request):
 
     # A True results is returned if age or amount are valid
     return build_validation_result(True, None, None)
-def get_risk_level()
+
+def none():
+    return "100% bonds (AGG), 0% equities (SPY)"
+def low():
+    return "60% bonds (AGG), 40% equities (SPY)"
+def medium():
+    return "40% bonds (AGG), 60% equities (SPY)"
+def high():
+    return "20% bonds (AGG), 80% equities (SPY)"
+
+def final_recommend(event):
+    if risk_level == "none":
+
 
 
 ### Intents Dispatcher ###
